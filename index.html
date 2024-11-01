@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+
+
+        
+
+
         body{
             margin: 0;
             padding: 0;
@@ -105,7 +110,112 @@
             margin-top: 50px;
             font-weight: bold;
         }
+
+
+        /* 适配pc */
+        @media screen and (min-width:960px){
+            .box{
+                width: 60%;
+                max-width: 950px;
+                min-width: 650px;
+            }
+        }
+
+        /* 适配pad */
+        @media screen and (max-width:960px){
+            .box{
+                display: block;
+                height: auto;
+                width: 60%;
+
+            }
+
+            .box>div{
+                width: 100%;
+            }
+
+            h1{
+                margin: 0;
+            }
+
+            .left{
+                padding: 20px 0;
+            }
+
+            .right{
+                padding-bottom: 20px;
+            }
+        }
+
+        /* 适配移动 */
+        @media screen and (max-width:750px){
+            .box{
+                width: 80%;
+            }
+        }
+
+
     </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(function(){
+            $('.btn').click(function(){
+                let account = $('.account').val();
+                let password = $('.password').val();
+                if(account == '' || password == ''){
+                    alert("文本输入为空!");
+                    return;
+                }
+                $.ajax({
+                    url:'http://localhost:8080/api/login',
+                    data:{
+                        account:account,
+                        password:password
+                    },
+                    type: 'post', // 改为 POST 请求
+                    dataType:'json',
+                    success:function(dt){
+                        if(dt==false){
+                            alert('账号密码输入有误!登录失败!')
+                        }else{
+                            alert('欢迎用户:'+dt.name+'登录!')
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                            alert('请求失败: ' + error); // 处理请求失败的情况
+                    }
+                })
+            })
+        })
+    </script>
+    <!-- <script>
+        window.onload=function(){
+            let user = {
+                account:'admin',
+                password:'123456'
+            }
+
+            document.querySelector('.btn').onclick=function(){
+                let account = document.querySelector('.account').value;
+                let password = document.querySelector('.password').value;
+                if(account == '' || password == ''){
+                    alert('文本输入有空!');
+                    return;
+                }
+                if(account!=user.account || password != user.password){
+                    alert('账号或者密码输入有误!');
+                    return;
+                }
+                alert("登录成功");
+                document.querySelector('.account').value='';
+                document.querySelector('.password').value='';
+            }
+        }
+    </script> -->
+
+
 </head>
 
 <body>
@@ -119,8 +229,8 @@
         </div>
         <div class="right">
             <h1>Login</h1>
-            <input type="text" class="input" placeholder="your account">
-            <input type="password" class="input" placeholder="your password">
+            <input type="text" class="input account" placeholder="your account">
+            <input type="password" class="input password" placeholder="your password">
             <button class="btn">Login</button>
         </div>
     </div>
